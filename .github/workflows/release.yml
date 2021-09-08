@@ -4,11 +4,6 @@ on:
     tags:
       - 'v*'
 
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-  FONTAWESOME_TOKEN: ${{secrets.FONTAWESOME_TOKEN}}
-
 jobs:
   publish_on_mac:
     runs-on: macos-latest
