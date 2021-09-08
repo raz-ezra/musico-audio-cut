@@ -4,6 +4,9 @@ on:
     tags:
       - 'v*'
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   publish_on_mac:
     runs-on: macos-latest
