@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import ffbinaries from 'ffbinaries';
+import path from 'path';
+
 import Uploader from './Uploader';
 import { 
     FlexColumnCenterWrapper, 
     Headline, 
     InfoButton, 
+    LoadingWrapper, 
     StyledBottomImage, 
     StyledHeader, 
     StyledLogo 
@@ -12,26 +16,51 @@ import {
 import logo from '../resources/musico_logo.svg';
 import waveOrange from '../resources/wave-orange.svg';
 import waveBlue from '../resources/wave-blue.svg';
+import Loader from './Loader';
 
 
 const Main = (): JSX.Element => {
+    const [ffmpegPath, setFfmpegPath] = useState<string>(null);
+
+    useEffect(() => {
+        console.log("downloading ffmpeg");
+        const destination = path.join(process.env['HOME'], '/.binaries');
+        ffbinaries.downloadBinaries('ffmpeg', {destination}, function (err, result) {
+            if (err) {
+                console.log(err);
+            }
+            setFfmpegPath(result[0].path + "/" + result[0].filename)
+          });
+    }, []);
+    
     return (
         <FlexColumnCenterWrapper>
-            <InfoButton>
-                ?
-                <div>
-                    This tool helps with cutting audio files exported from Sibelius using NotePerformer.
-                </div>
-            </InfoButton>
-            <StyledHeader>
-                <StyledLogo src={logo}/>
-                <Headline>
-                    Cut Audio Files
-                </Headline>
-            </StyledHeader>
-            <Uploader />
-            <StyledBottomImage src={waveOrange} animationDelay={true}/>
-            <StyledBottomImage src={waveBlue}/>
+            {ffmpegPath ? (
+                <>
+                    <InfoButton>
+                        ?
+                        <div>
+                            This tool helps with cutting audio files exported from Sibelius using NotePerformer.
+                        </div>
+                    </InfoButton>
+                    <StyledHeader>
+                        <StyledLogo src={logo}/>
+                        <Headline>
+                            Cut Audio Files
+                        </Headline>
+                    </StyledHeader>
+                    <Uploader ffmpegPath={ffmpegPath} />
+                    <StyledBottomImage src={waveOrange} animationDelay={true}/>
+                    <StyledBottomImage src={waveBlue}/>
+                </>
+            ) : (
+                <LoadingWrapper>
+                    <Loader />
+                    <div>
+                        Downloading resources...
+                    </div>
+                </LoadingWrapper>
+            )}
         </FlexColumnCenterWrapper>
     );
 }

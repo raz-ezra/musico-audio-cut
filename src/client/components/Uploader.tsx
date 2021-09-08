@@ -1,18 +1,31 @@
-import React, {useRef, ChangeEvent} from 'react';
-import { HiddenInput, StyledButton } from './StyledComponents';
-// import { ipcRenderer } from 'electron';
+import React, {useRef, ChangeEvent, useEffect, useState} from 'react';
+import { FilesResult, HiddenInput, ResultWrapper, StyledButton } from './StyledComponents';
 
-const Uploader = (): JSX.Element => {
+import {cutAudio, CutAudioResult} from './cutAudio';
+import Loader from './Loader';
+
+type UploaderProps = {
+    ffmpegPath: string;
+}
+
+const Uploader = ({ffmpegPath}: UploaderProps): JSX.Element => {
     const inputRef = useRef(null);
+    
+    const [isCutting, setIsCutting] = useState<boolean>(false);
+    const [cutAudioResult, setCutAudioResult] = useState<CutAudioResult>(null);
+
+    
 
     const handleCutFiles = ({ target }: ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(target.files);
-        // ipcRenderer.send('files:cutRequest', files);
-        // files.forEach(file => {
-        //     console.log(file);
-        //     const mp3FilePath = file.name.replace(/\.aiff$|\.wav$|\.wave$/, ".mp3");
-        //     const outPath = file.path.replace(file.name, mp3FilePath);
-        // })
+        if (files.length > 0) {
+            setIsCutting(true);
+            cutAudio(files, ffmpegPath).then(result => {
+                setIsCutting(false);
+                setCutAudioResult(result);
+                inputRef.current.value = "";
+            });
+        }
     };
 
     return (
@@ -25,10 +38,41 @@ const Uploader = (): JSX.Element => {
                 onChange={handleCutFiles}
             />
             <StyledButton
-                onClick={() => inputRef.current.click()}
+                onClick={() => {
+                    setCutAudioResult(null);
+                    inputRef.current.click()
+                }}
+                disabled={!ffmpegPath}
             >
                 Select Files to Cut
             </StyledButton>
+            {isCutting && <Loader />}
+            {cutAudioResult && (
+                <ResultWrapper>
+                    Finished Cutting Audio!
+                    {cutAudioResult.success.length > 0  && (
+                        <FilesResult>
+                            {`Hover to see cut ${cutAudioResult.success.length > 1 ? "files" : "file"} names`} 
+                            <div>
+                                <ul>
+                                    {cutAudioResult.success.map(file => (<li key={file}>{file}</li>))}
+                                </ul>
+                            </div>
+                        </FilesResult>
+                    )}
+                    {cutAudioResult.errors.length > 0 && (
+                        <FilesResult isError={true}>
+                            {`Hover to see ${cutAudioResult.errors.length > 1 ? "files" : "file"} errors`} 
+                            <div>
+                                <ul>
+                                    {cutAudioResult.errors.map(file => (<li key={file}>{file}</li>))}
+                                </ul>
+                            </div>
+                        </FilesResult>
+                    )}
+                </ResultWrapper>
+            )}
+            
         </>
     );
 }

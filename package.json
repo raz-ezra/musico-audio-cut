@@ -1,6 +1,6 @@
 {
   "name": "musico-audio-cut",
-  "productName": "musico-audio-cut",
+  "productName": "Musico Audio Cut",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": ".webpack/main",
@@ -51,11 +51,15 @@
             "mainConfig": "./webpack.main.config.js",
             "renderer": {
               "config": "./webpack.renderer.config.js",
+              "nodeIntegration": true,
               "entryPoints": [
                 {
                   "html": "./src/client/index.html",
                   "js": "./src/client/renderer.ts",
-                  "name": "main_window"
+                  "name": "main_window",
+                  "preload": {
+                    "js": "./src/preload.ts"
+                  }
                 }
               ]
             }
@@ -73,6 +77,7 @@
     "@electron-forge/maker-squirrel": "^6.0.0-beta.60",
     "@electron-forge/maker-zip": "^6.0.0-beta.60",
     "@electron-forge/plugin-webpack": "^6.0.0-beta.60",
+    "@types/ffbinaries": "^1.1.2",
     "@types/react": "^17.0.20",
     "@types/react-dom": "^17.0.9",
     "@typescript-eslint/eslint-plugin": "^4.31.0",
@@ -85,6 +90,7 @@
     "eslint-plugin-import": "^2.24.2",
     "fork-ts-checker-webpack-plugin": "^6.3.3",
     "node-loader": "^2.0.0",
+    "os": "^0.1.2",
     "style-loader": "^3.2.1",
     "ts-loader": "^9.2.5",
     "typescript": "^4.4.2",
@@ -94,6 +100,9 @@
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "electron-squirrel-startup": "^1.0.0",
+    "ffbinaries": "^1.1.4",
+    "i": "^0.3.6",
+    "npm": "^7.22.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   }
