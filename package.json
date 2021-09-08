@@ -1,6 +1,6 @@
 {
   "name": "musico-audio-cut",
-  "productName": "Musico Audio Cut",
+  "productName": "Musico-Audio-Cut",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": ".webpack/main",
@@ -20,7 +20,8 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "icon": "./icons/icon"
+        "icon": "./icons/icon",
+        "name": "Musico - Cut Audio Files"
       },
       "makers": [
         {
