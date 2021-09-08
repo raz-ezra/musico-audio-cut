@@ -27,7 +27,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "Musico Audio Cut"
+            "name": "Musico-Audio-Cut"
           }
         },
         {
