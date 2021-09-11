@@ -1,7 +1,7 @@
 {
   "name": "musico-audio-cut",
   "productName": "Musico-Audio-Cut",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "My Electron application description",
   "main": ".webpack/main",
   "scripts": {
@@ -66,6 +66,18 @@
             }
           }
         ]
+      ],
+      "publishers": [
+        {
+          "name": "@electron-forge/publisher-github",
+          "config": {
+            "repository": {
+              "owner": "raz-ezra",
+              "name": "Musico-Audio-Cut"
+            },
+            "draft": true
+          }
+        }
       ]
     }
   },
@@ -78,6 +90,7 @@
     "@electron-forge/maker-squirrel": "^6.0.0-beta.60",
     "@electron-forge/maker-zip": "^6.0.0-beta.60",
     "@electron-forge/plugin-webpack": "^6.0.0-beta.60",
+    "@electron-forge/publisher-github": "^6.0.0-beta.61",
     "@types/ffbinaries": "^1.1.2",
     "@types/react": "^17.0.20",
     "@types/react-dom": "^17.0.9",
