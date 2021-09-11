@@ -24,7 +24,7 @@ const Main = (): JSX.Element => {
 
     useEffect(() => {
         console.log("downloading ffmpeg");
-        const destination = path.join(process.env['HOME'], '/.binaries');
+        const destination = path.join(process.env['HOME'], '/.ffmpegBinaries');
         ffbinaries.downloadBinaries('ffmpeg', {destination}, function (err, result) {
             if (err) {
                 console.log(err);
