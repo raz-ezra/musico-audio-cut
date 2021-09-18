@@ -17,6 +17,7 @@ import logo from '../resources/musico_logo.svg';
 import waveOrange from '../resources/wave-orange.svg';
 import waveBlue from '../resources/wave-blue.svg';
 import Loader from './Loader';
+import os from 'os';
 
 
 const Main = (): JSX.Element => {
@@ -24,7 +25,9 @@ const Main = (): JSX.Element => {
 
     useEffect(() => {
         console.log("downloading ffmpeg");
-        const destination = path.join(process.env['HOME'], '/.ffmpegBinaries');
+        const homedir = require('os').homedir()
+        const destination = path.join(homedir, '/.ffmpegBinaries');
+        console.log(destination)
         ffbinaries.downloadBinaries('ffmpeg', {destination}, function (err, result) {
             if (err) {
                 console.log(err);
